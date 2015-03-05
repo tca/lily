@@ -17,3 +17,9 @@ cd lily
 git submodule init
 git submodule update
 ```
+
+Using
+-----
+```
+./interpreter.sh <filename>
+```
