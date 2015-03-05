@@ -4,6 +4,8 @@
         (lily recognize)
         (lily compile))
 
+;; sagittarius -Lmatch-sagittarius -L. -S.sld -d lily.scm
+
 (define (read-program filename)
   (let ((code (file->sexp-list filename)))
     (unless (parse-program code)
