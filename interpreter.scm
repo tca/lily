@@ -12,20 +12,6 @@
 (define (collect-defines exps)
   (fold-left (lambda (ds e) (collect-define e ds)) '() exps))
 
-(define (desugar exp env)
-  (cond
-   ((symbol? exp) exp)
-   ((number? exp) exp)
-   ((pair? exp)
-    (if (member (car exp) env)
-        (map (lambda (e) (desugar e env)) exp)
-        (match exp
-          (`(if ,t ,c ,a) `(if ,(desugar t env) ,(desugar c env) ,(desugar a env)))
-          (`(begin . ,body) `(begin . ,(map (lambda (e) (desugar e env)) body)))
-          (`(define ,bindings . ,body) `(define ,bindings ,(desugar `(begin . ,body) env)))
-          (else (error "unkown exp: " exp)))))
-   (else (error "unkown exp: " exp))))
-
 (define (eval c e te k)
   (cond
    ((symbol? c) (cond
@@ -46,12 +32,22 @@
               (eval t e te (lambda (t1) (if (zero? t1) (eval a e te k) (eval c e te k)))))
              (`(begin ,fe) (eval fe e te k))
              (`(begin ,fe . ,re) (eval fe e te (lambda (_) (eval `(begin . ,re) e te k))))
-             (`(define (,name . ,params) ,body)
-              (let ((compiled (lambda (k args) (eval body (map cons params args) te k))))
-                (set-box! (cdr (assoc name te)) compiled)
-                (k 0)))
              (else (error 'eval "unkown exp: " c))))))
    (else (error 'eval "unkown exp: " c))))
+
+(define (eval-top c e te k)
+  (match c
+    (`(define (,name . ,params) . ,body)
+     (let ((compiled (lambda (k args) (eval `(begin . ,body) (map cons params args) te k))))
+       (set-box! (cdr (assoc name te)) compiled)
+       (k 0)))
+    (else (eval c e te k))))
+
+(define (eval-program p e te k)
+  (match p
+    (`() (error 'eval-top "empty program"))
+    (`(,fe) (eval-top fe e te k))
+    (`(,fe . ,re) (eval-top fe e te (lambda (_) (eval-program re e te k))))))
 
 (define builtins
   `((= . ,(lambda (k args) (k (if (= (car args) (cadr args)) 1 0))))
@@ -62,9 +58,8 @@
     (mod . ,(lambda (k args) (k (mod (car args) (cadr args)))))))
 
 (define (run-program p)
-  (let* ((defines (collect-defines p))
-         (desugared (map (lambda (e) (desugar e (append defines (map car builtins)))) p)))
-    (eval `(begin . ,desugared) '() (append (map (lambda (d) (cons d (box '()))) defines) builtins) (lambda (x) x))))
+  (let* ((defines (collect-defines p)))
+    (eval-program p '() (append (map (lambda (d) (cons d (box '()))) defines) builtins) (lambda (x) x))))
 
 #|
 (pretty-print (eval 1 '() '() (lambda (x) x)))
