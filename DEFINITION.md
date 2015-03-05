@@ -1,5 +1,5 @@
 ```
-<progam> ::= <definition> ...
+<program> ::= <definition> ...
 
 <definition> ::= (define (<name> <var> ...) <statement> ... <expression>)
 
