@@ -5,3 +5,5 @@
 
 (define (fib n)
   (fib-aux 0 1 n))
+
+(fib 20)

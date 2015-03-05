@@ -1,9 +1,8 @@
-(add-load-path "match-sagittarius")
-(add-load-suffix ".sld")
 (import (match match)
         (pp)
         (srfi :111)
-        (core errors))
+        (core errors)
+        (util file))
 
 (define (collect-define exp defines)
   (match exp
@@ -62,12 +61,6 @@
   (let* ((defines (collect-defines p)))
     (eval-program p '() (append (map (lambda (d) (cons d (box '()))) defines) builtins) (lambda (x) x))))
 
-#|
-(pretty-print (eval 1 '() '() (lambda (x) x)))
-(pretty-print (eval 'a '((a . 1)) '()  (lambda (x) x)))
-(pretty-print (eval '(if 1 2 3) '() '() (lambda (x) x)))
-(pretty-print (eval '(if 0 2 3) '() '() (lambda (x) x)))
-(pretty-print (eval '(begin 1 2 3) '() '() (lambda (x) x)))
-(pretty-print (run-program '((define (a) 1) (define (b) 2) (- (a) (b)))))
-(pretty-print (run-program '((define (a i e) (if (= i e) i (a (+ i 1) e))) (a 1 100000))))
-|#
+(let ((args (command-line)))
+  (display (run-program (file->sexp-list (cadr args))))
+  (newline))

@@ -1,0 +1,25 @@
+(define (t1) 1)
+(define (t2) (if 1 2 3))
+(define (t3) (if 0 2 3))
+(define (t4) (begin 1 2 3))
+
+(define (a) 1)
+(define (b) 2)
+(define (t5) (- (a) (b)))
+
+(define (c i e) (if (= i e) i (c (+ i 1) e)))
+(define (t6) (c 1 100000))
+
+(if (= (t1) 1)
+    (if (= (t2) 2)
+        (if (= (t3) 3)
+            (if (= (t4) 3)
+                (if (= (t5) -1)
+                    (if (= (t6) 100000)
+                        1
+                        0)
+                    0)
+                0)
+            0)
+        0)
+    0)

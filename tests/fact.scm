@@ -1,4 +1,9 @@
-(define(fact_acc n acc)
+(define (fact-acc n acc)
   (if (= 0 n)
       acc
-      (fact_acc((n-1), acc*n))))
+      (fact-acc (- n 1) (* acc n))))
+
+(define (fact n)
+  (fact-acc n 1))
+
+(fact 10)
