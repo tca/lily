@@ -1,0 +1,3 @@
+[submodule "match-sagittarius"]
+	path = match-sagittarius
+	url = https://github.com/orchid-hybrid/match-sagittarius.git

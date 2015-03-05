@@ -1,5 +1,6 @@
-(map load '("../match-sagittarius/trie.sld" "../match-sagittarius/compile-pattern.sld" "../match-sagittarius/interpret-tree.sld" "../match-sagittarius/match.sld"))
-(import (match)
+(add-load-path "match-sagittarius")
+(add-load-suffix ".sld")
+(import (match match)
         (pp)
         (srfi :111)
         (core errors))
