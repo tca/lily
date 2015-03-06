@@ -5,58 +5,75 @@
       (and (p (car l))
            (all p (cdr l)))))
 
-;; TODO: extract names of all the definitions
-;; pass this list in for procedure calls to
-;; check against (e.g. right now if inside an
-;; expression is accepted
+
 
 (define (parse-program program)
-  (match program
-    ('() #t)
-    (`(,def . ,programs)
-     (and (parse-definition def)
-          (parse-program programs)))
-    (else #f)))
+  (let ((names (append '((+ . 2)
+                         (- . 2)
+                         (* . 2)
+                         (/ . 2)
+                         (% . 2))
+                       (extract-names program))))
+    (match program
+      ('() #t)
+      (`(,def . ,programs)
+       (and (parse-definition names def)
+            (parse-program programs)))
+      (else #f))))
 
-(define (parse-definition def)
+(define (extract-names program)
+  (map extract-name program))
+
+(define (extract-name def)
+  (match def
+    (`(define (,name . ,vars) . ,body)
+     (cons name (length vars)))
+    (error "not a definition in extract name")))
+
+(define (parse-definition names def)
   (match def
     (`(define (,name . ,vars) . ,body)
      (and (symbol? name)
           (all symbol? vars)
-          (parse-body body)))
+          (parse-body names body)))
     (else #f)))
 
-(define (parse-body body)
+(define (parse-body names body)
   (match body
     ('() #f)
-    (`(,exp) (parse-expression exp))
+    (`(,exp) (parse-expression names exp))
     (`(,car . ,cdr)
-     (and (parse-statement car)
-          (parse-body cdr)))
+     (and (parse-statement names car)
+          (parse-body names cdr)))
     (else #f)))
 
-(define (parse-statement st)
+(define (parse-statement names st)
   (match st
     (`(begin . ,ss)
-     (all (parse-statement ss)))
+     (all (lambda (exp) (parse-statement names exp))
+          ss))
     (`(print ,p)
      (if (string? p)
          #t
-         (parse-expression p)))
+         (parse-expression names p)))
     (`(if ,t ,cs ,as)
-     (and (parse-expression t)
-          (parse-statement cs)
-          (parse-statement ss)))
+     (and (parse-expression names t)
+          (parse-statement names cs)
+          (parse-statement names ss)))
     (`(set! ,v ,e)
      (and (symbol? v)
-          (parse-expression e)))
+          (parse-expression names e)))
     (else #f)))
 
-(define (parse-expression exp)
+(define (parse-expression names exp)
   (match exp
     (else
      (or (symbol? exp)
          (number? exp)
          (and (list? exp)
               (symbol? (car exp))
-              (all parse-expression (cdr exp)))))))
+              (cond ((assoc (car exp) names)
+                     => (lambda (entry)
+                          (= (length (cdr exp)) (cdr entry))))
+                    (else #f))
+              (all (lambda (exp) (parse-expression names exp)) (cdr exp)))))))

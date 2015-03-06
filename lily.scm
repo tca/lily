@@ -15,6 +15,7 @@
 
 (let ((code (read-program "other-tests/t1.scm")))
   (print 'read-program)
+  (print (list 'program-names ': (extract-names code)))
   (let ((compiled code))
     (print 'compiled-program)
     (let ((result 0))
