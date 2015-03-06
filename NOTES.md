@@ -4,6 +4,8 @@ When calling a function you are setting a label to jump to, setting up args, the
 
 Arguments will be passed on the stack pushed in left to right order.
 
+It would be useful to think of compiling to an IL made of labelled blocks (perhaps).
+
 ### Rough idea of compiling a tail call (subject to change)
 
 ```
@@ -13,7 +15,7 @@ could be compiled like this:
 
 f:
 ;; expecting a stack frame set up with
-;; rbp[return value][x][y]rsp
+;; rbp[x][y][return value]rsp
 
 ;; stack allocate two memory cells by increasing rsp
 sub rsp, 2
