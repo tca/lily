@@ -15,7 +15,7 @@ could be compiled like this:
 
 f:
 ;; expecting a stack frame set up with
-;; rbp[x][y][return value]rsp
+;; rbp[saved rbp][return address][x][y]rsp
 
 ;; stack allocate two memory cells by increasing rsp
 sub rsp, 2
