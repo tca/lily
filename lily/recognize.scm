@@ -5,6 +5,10 @@
       (and (p (car l))
            (all p (cdr l)))))
 
+;; TODO: extract names of all the definitions
+;; pass this list in for procedure calls to
+;; check against (e.g. right now if inside an
+;; expression is accepted
 
 (define (parse-program program)
   (match program
@@ -33,18 +37,23 @@
 
 (define (parse-statement st)
   (match st
+    (`(begin . ,ss)
+     (all (parse-statement ss)))
     (`(print ,p)
      (if (string? p)
          #t
          (parse-expression p)))
+    (`(if ,t ,cs ,as)
+     (and (parse-expression t)
+          (parse-statement cs)
+          (parse-statement ss)))
+    (`(set! ,v ,e)
+     (and (symbol? v)
+          (parse-expression e)))
     (else #f)))
 
 (define (parse-expression exp)
   (match exp
-    (`(if ,t ,c ,a)
-     (and (parse-expression t)
-          (parse-expression c)
-          (parse-expression a)))
     (else
      (or (symbol? exp)
          (number? exp)

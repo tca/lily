@@ -2,7 +2,8 @@
         (match match)
         (util file) ;; for file->sexp-list
         (lily recognize)
-        (lily compile))
+        ;(lily compile)
+        )
 
 ;; sagittarius -Lmatch-sagittarius -L. -S.sld -d lily.scm
 
@@ -14,9 +15,9 @@
 
 (let ((code (read-program "other-tests/t1.scm")))
   (print 'read-program)
-  (let ((compiled (compile-program code)))
+  (let ((compiled code))
     (print 'compiled-program)
-    (let ((result (apply-function compiled 'foo (list 7))))
+    (let ((result 0))
       (print 'executed-program)
       (print (list 'result result)))))
 
