@@ -3,12 +3,14 @@
 
 <definition> ::= (define (<name> <var> ...) <statement> ... <expression>)
 
-<statement> ::= (print "string")
+<statement> ::= (begin <statement> ...)
+              | (print "string")
               | (print <expression>)
+              | (if <expression> <statement> <statement>)
+              | (set! <var> <expression>)
 
 <expresson> ::= <var>
               | (<op> <expresson> <expresson>)
-              | (if <expresson>  <expresson> <expresson>)
               | (<name> <expression> ...) ;; procedure call
 
 <op> ::= + | - | * | % | / | =
