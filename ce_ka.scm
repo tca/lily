@@ -12,10 +12,15 @@
 (define (collect-defines exps)
   (fold-left (lambda (ds e) (collect-define e ds)) '() exps))
 
+(define (lookup-calc a env n)
+  (cond ((null? env) #f)
+        ((equal? (caar env) a) (cons n (cdar env)))
+        (else (lookup-calc a (cdr env) (+ n 1)))))
+
 (define (eval c e te)
   (cond
    ((symbol? c) (cond
-                 ((assoc c e) => (lambda (p) (cdr p)))
+                 ((lookup-calc c e 0) => (lambda (p) ((cdr p) (car p))))
                  (else (error 'eval "unbound variable: " c))))
    ((number? c) (lambda (k args) (k c)))
    ((pair? c)
@@ -52,12 +57,7 @@
   (else (error 'eval "unkown exp: " c))))
 
 (define (build-call-env params)
-  (define (aux params c memo)
-    (cond ((null? params) memo)
-          (else
-           (let ((getter (lambda (k args) (k (vector-ref args c)))))
-             (aux (cdr params) (+ c 1) (cons (cons (car params) getter) memo))))))
-  (aux params 0 '()))
+  (map (lambda (p) (cons p (lambda (c) (lambda (k args) (k (vector-ref args c)))))) params))
 
 (define (eval-top c e te)
   (match c
