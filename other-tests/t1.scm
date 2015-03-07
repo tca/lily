@@ -1,3 +1,1 @@
-(define (foo bar)
-  (print (foo 0))
-  bar)
+(define (main) 101)
