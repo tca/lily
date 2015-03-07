@@ -47,7 +47,7 @@
   (match exp
     (`(+ ,x ,y)
      `(join ,(compile-expression x)
-            (push rbx)
+            (push rax)
             ,(compile-expression y)
             (pop rbx)
             (elt (add rax rbx))))
