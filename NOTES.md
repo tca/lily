@@ -38,3 +38,60 @@ mov [rbp+4*2],rax
 
 jmp f_inner
 ```
+
+### Rough idea for the stack frame layout/calling convention
+
+use `rax` to return values. Use `rbp` for base pointer and `rsp` for stack.
+
+to call a procedure foo:
+
+```
+...
+;; push each arg on the stack
+push rbp
+call foo
+pop rbp
+;; return value is rax
+...
+```
+
+the procedure itself:
+
+```
+foo:
+mov rbp,rsp
+(A)
+...
+(B)
+...
+ret
+```
+
+at time (A) the stack looks like:
+
+```
+----------------rbp
+[  foo arg 1   ]
+[  foo arg 2   ]
+[  saved rbp   ]
+[return address]
+----------------rsp
+```
+
+(B) can extend rsp as much as it wants
+
+```
+----------------rbp
+[  foo arg 1   ]
+[  foo arg 2   ]
+[  saved rbp   ]
+[return address]
+[scratch space ]
+[scratch space ]
+[scratch space ]
+[scratch space ]
+[scratch space ]
+----------------rsp
+```
+
+(make sure to get rid of that before doing ret)
