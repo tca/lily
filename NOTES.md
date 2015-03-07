@@ -6,6 +6,8 @@ Arguments will be passed on the stack pushed in left to right order.
 
 It would be useful to think of compiling to an IL made of labelled blocks (perhaps).
 
+procedure calls ddont play well with register allocation so optimize `(+ x y (g) z w)` to `(set! tmp-1 (g))  (+ x y tmp-1 z w)`.
+
 ### Rough idea of compiling a tail call (subject to change)
 
 ```
