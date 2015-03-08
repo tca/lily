@@ -12,7 +12,6 @@
   (match def
     (`(define (,name . ,vars) . ,body)
      `(join (elt (label ,name))
-            (elt (mov rbp rsp))
             ,(compile-body body)
             (elt (ret))))))
 
@@ -45,22 +44,26 @@
 
 (define (compile-expression exp)
   (match exp
-    (`(+ ,x ,y)
-     `(join ,(compile-expression x)
-            (push rax)
-            ,(compile-expression y)
-            (pop rbx)
-            (elt (add rax rbx))))
     (`(,f . ,args)
      (begin ;; TODO fix match so I don't need this begin
-       (unless (= 0 (length args))
-               (error "fail11"))
-       `(join (elt (push rbp))
-              (elt (call ,f))
-              (elt (pop rbp)))))
+       `(join
+         (elt (push rbp))
+         (elt (mov rbp rsp))
+         (join . ,(map (lambda (arg)
+                         `(join ,(compile-expression exp)
+                                (push rax)))
+                       args))
+         (elt (call ,(mangle-name f)))
+         (elt (add rsp ,(* 8 (length args))))
+         (elt (pop rbp)))))
     (else (cond ((number? exp)
                  `(elt (mov rax ,exp)))
                 ((symbol? exp)
                  (error "fail9"))
                 (else
                  (error "fail10"))))))
+
+(define (mangle-name f)
+  (case f
+    ((+) 'plus)
+    (else f)))

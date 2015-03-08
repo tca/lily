@@ -14,7 +14,7 @@
     code))
 
 (let ((test (cadr (command-line))))
-  (let ((code (read-program (string-append "other-tests/" test ".scm"))))
+  (let ((code (read-program test)))
     ;(print 'read-program)
     ;(print (list 'program-names ': (extract-names code)))
     (let ((compiled (compile-program code)))
