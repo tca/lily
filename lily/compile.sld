@@ -2,7 +2,8 @@
   
   (import (scheme base)
           (match match)
-          (lily sequence))
+          (lily sequence)
+          (lily mangle))
 
   (export
     compile-program)

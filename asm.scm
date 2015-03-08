@@ -12,12 +12,20 @@
   (cond 
    ((string? x) (print-indent) (display x) (newline))
    ((equal? 'label (car x)) (print-label x))
+   ((equal? 'include (car x)) (print-include x))
    (else  (print-instr x))))
 
 (define (print-label x)
   (newline)
   (display (cadr x))
   (display ":")
+  (newline))
+
+(define (print-include x)
+  (display "%include ")
+  (display "\"")
+  (display (cadr x))
+  (display "\"")
   (newline))
 
 (define (print-instr x)

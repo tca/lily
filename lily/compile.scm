@@ -1,5 +1,6 @@
 (define (compile-program program)
-  (sequence->list (compile-program->seq program)))
+  (sequence->list `(join (elt (include "base.asm"))
+                         ,(compile-program->seq program))))
 
 (define (compile-program->seq program)
   (match program
@@ -11,7 +12,7 @@
 (define (compile-definition def)
   (match def
     (`(define (,name . ,vars) . ,body)
-     `(join (elt (label ,name))
+     `(join (elt (label ,(mangle-symbol name)))
             ,(compile-body body)
             (elt (ret))))))
 
@@ -50,8 +51,8 @@
          (elt (push rbp))
          (elt (mov rbp rsp))
          (join . ,(map (lambda (arg)
-                         `(join ,(compile-expression exp)
-                                (push rax)))
+                         `(join ,(compile-expression arg)
+                                (elt (push rax))))
                        args))
          (elt (call ,(mangle-name f)))
          (elt (add rsp ,(* 8 (length args))))
@@ -66,4 +67,4 @@
 (define (mangle-name f)
   (case f
     ((+) 'plus)
-    (else f)))
+    (else (mangle-symbol f))))

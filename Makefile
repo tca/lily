@@ -1,4 +1,4 @@
-SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.scm other-tests/t5.scm other-tests/t6.scm
+SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.scm
 ASSEMBLES=$(SOURCES:.scm=.asm)
 OBJECTS=$(ASSEMBLES:.asm=.o)
 BINARIES=$(OBJECTS:.o=.exe)
@@ -6,9 +6,9 @@ BINARIES=$(OBJECTS:.o=.exe)
 all: $(ASSEMBLES) $(BINARIES)
 
 %.asm: %.scm
-	sagittarius -Lmatch-sagittarius -L. -S.sld -d lily.scm $< > $@
+	sagittarius -c -Lmatch-sagittarius -L. -S.sld -d lily.scm $< > $@
 
-%.o: %.asm
+%.o: %.asm base.asm
 	nasm -felf64 $< -o $@
 
 %.exe: %.o
@@ -16,5 +16,6 @@ all: $(ASSEMBLES) $(BINARIES)
 
 clean:
 	rm -f $(OBJECTS)
+	rm -f $(ASSEMBLES)
 	rm -f $(BINARIES)
 
