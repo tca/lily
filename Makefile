@@ -1,4 +1,4 @@
-SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.scm
+SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.scm other-tests/t5.scm other-tests/t6.scm
 ASSEMBLES=$(SOURCES:.scm=.asm)
 OBJECTS=$(ASSEMBLES:.asm=.o)
 BINARIES=$(OBJECTS:.o=.exe)

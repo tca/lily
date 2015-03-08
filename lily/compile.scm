@@ -21,8 +21,8 @@
     (`(,exp)
      (compile-expression exp))
     (`(,car . ,cdr)
-     (join (compile-statement car)
-           (compile-body cdr)))))
+     `(join ,(compile-statement car)
+            ,(compile-body cdr)))))
 
 (define (compile-statement st)
   (match st
@@ -30,8 +30,11 @@
      `(join . (map (lambda (exp)
                      (compile-statement exp))
                    ss)))
+    (`(newline)
+     `(elt (call newline)))
     (`(print ,p)
-     (error "not impemented print"))
+     `(join ,(compile-expression p)
+            (elt (call print))))
     (`(if ,t ,cs ,as)
      ;; (and (compile-expression t)
      ;;      (compile-statement cs)

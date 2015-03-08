@@ -1,5 +1,6 @@
 section .data
 digits: db  "0123456789",10
+nl: db 0xA
 n: dq 420
 
 section .text
@@ -16,6 +17,11 @@ plus:
         add eax,[rbp-8*2]
         ret
 
+newline:
+        mov rsi, nl             ; load char ptr
+        mov rax, 1              ; write
+        syscall
+        ret
         
 print:
         push 0

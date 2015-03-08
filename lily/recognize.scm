@@ -52,6 +52,8 @@
     (`(begin . ,ss)
      (all (lambda (exp) (parse-statement names exp))
           ss))
+    (`(newline)
+     #t)
     (`(print ,p)
      (if (string? p)
          #t

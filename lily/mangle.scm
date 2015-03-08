@@ -30,7 +30,7 @@
                              (`(#\s #\y #\m . ,rest)
                               (append (list #\s #\y #\m #\_ #\s #\y #\m)
                                       rest))
-                                 (else l))))
+                             (else l))))
         (fixup (lambda (s)
                  (if (equal? "_bang" s)
                      "!"
