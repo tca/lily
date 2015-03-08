@@ -93,7 +93,7 @@ and restore rbp.
 
 ```
 -CALLER-RETURN-------------------------------------------
-sub rsp,2*8  ;; assuming 8 bytes per word
+add rsp,2*8  ;; assuming 8 bytes per word
 pop rbp
 ---------------------------------------------------------
 ```
