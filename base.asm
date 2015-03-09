@@ -8,7 +8,7 @@ section .text
 _start:
         call main
 ;; exit
-        xor     rdi,rax
+        mov     rdi,rax
         mov     rax,60
         syscall
         
