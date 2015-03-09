@@ -64,6 +64,8 @@ jmp f
 
 # 3. Calling convention
 
+**Update**: It turns out this calling convention is bad! It makes it very hard to get function parameters. The C calling convention puts all the rbp work in the CALLEE instead of CALLER and this works much better. See NOTES3.md
+
 ## Caller
 
 To perform a call like (foo arg1 arg2) we could do this:
