@@ -1,0 +1,12 @@
+(define (main)
+  (display (first 1 2 3))
+  (newline)
+  (display (second 1 2 3))
+  (newline)
+  (display (third 1 2 3))
+  (newline)
+  107)
+
+(define (first x y z) x)
+(define (second x y z) y)
+(define (third x y z) z)
