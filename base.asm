@@ -13,8 +13,8 @@ _start:
         syscall
         
 plus:
-        mov eax,[rbp-8*1]
-        add eax,[rbp-8*2]
+        mov rax,[rsp+8*1]
+        add rax,[rsp+8*2]
         ret
 
 newline:

@@ -13,13 +13,15 @@
   (match def
     (`(define (,name . ,vars) . ,body)
      `(join (elt (label ,(mangle-symbol name)))
+            (elt (push rbp))
+            (elt (mov rbp rsp))
             ,(compile-body body)
+            (elt (pop rbp))
             (elt (ret))))))
 
 (define (compile-body body)
   (match body
-    (`(,exp)
-     (compile-expression exp))
+    (`(,exp) (compile-expression exp))
     (`(,car . ,cdr)
      `(join ,(compile-statement car)
             ,(compile-body cdr)))))
@@ -51,15 +53,12 @@
     (`(,f . ,args)
      (begin ;; TODO fix match so I don't need this begin
        `(join
-         (elt (push rbp))
-         (elt (mov rbp rsp))
          (join . ,(map (lambda (arg)
                          `(join ,(compile-expression arg)
                                 (elt (push rax))))
                        args))
          (elt (call ,(mangle-name f)))
-         (elt (add rsp ,(* 8 (length args))))
-         (elt (pop rbp)))))
+         (elt (add rsp ,(* 8 (length args)))))))
     (else (cond ((number? exp)
                  `(elt (mov rax ,exp)))
                 ((symbol? exp)
