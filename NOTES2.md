@@ -66,6 +66,8 @@ jmp f
 
 **Update**: It turns out this calling convention is bad! It makes it very hard to get function parameters. The C calling convention puts all the rbp work in the CALLEE instead of CALLER and this works much better. See NOTES3.md. (also if you think about it, procedures will usually call more than one procedure - so it's better to put the most work in the callee rather than the caller)
 
+http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/function-perilogues.html
+
 ## Caller
 
 To perform a call like (foo arg1 arg2) we could do this:
