@@ -23,7 +23,7 @@ newline:
         syscall
         ret
         
-print:
+display:
         push 0
 .decomp_loop:                    ; decompose number onto digits on stack
         test rax,rax

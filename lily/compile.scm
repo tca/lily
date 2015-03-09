@@ -15,28 +15,28 @@
      `(join (elt (label ,(mangle-symbol name)))
             (elt (push rbp))
             (elt (mov rbp rsp))
-            ,(compile-body body)
+            ,(compile-body vars body)
             (elt (pop rbp))
             (elt (ret))))))
 
-(define (compile-body body)
+(define (compile-body vars body)
   (match body
-    (`(,exp) (compile-expression exp))
+    (`(,exp) (compile-expression vars exp))
     (`(,car . ,cdr)
-     `(join ,(compile-statement car)
-            ,(compile-body cdr)))))
+     `(join ,(compile-statement vars car)
+            ,(compile-body vars cdr)))))
 
-(define (compile-statement st)
+(define (compile-statement vars st)
   (match st
     (`(begin . ,ss)
      `(join . (map (lambda (exp)
-                     (compile-statement exp))
+                     (compile-statement vars exp))
                    ss)))
     (`(newline)
      `(elt (call newline)))
-    (`(print ,p)
-     `(join ,(compile-expression p)
-            (elt (call print))))
+    (`(display ,p)
+     `(join ,(compile-expression vars p)
+            (elt (call display))))
     (`(if ,t ,cs ,as)
      ;; (and (compile-expression t)
      ;;      (compile-statement cs)
@@ -48,13 +48,13 @@
      ;;      (compile-expression e))
      (error "fail3"))))
 
-(define (compile-expression exp)
+(define (compile-expression vars exp)
   (match exp
     (`(,f . ,args)
      (begin ;; TODO fix match so I don't need this begin
        `(join
          (join . ,(map (lambda (arg)
-                         `(join ,(compile-expression arg)
+                         `(join ,(compile-expression vars arg)
                                 (elt (push rax))))
                        args))
          (elt (call ,(mangle-name f)))
@@ -62,9 +62,18 @@
     (else (cond ((number? exp)
                  `(elt (mov rax ,exp)))
                 ((symbol? exp)
-                 (error "fail9"))
+                 `(elt (mov rax (+ rbp ,(offset-of exp vars)))))
                 (else
                  (error "fail10"))))))
+
+(define (offset-of var list)
+  (* 8 (+ (- (length list) (index-of var list))
+          1)))
+
+(define (index-of var list)
+  (if (eq? var (car list))
+      0
+      (+ 1 (index-of var (cdr list)))))
 
 (define (mangle-name f)
   (case f

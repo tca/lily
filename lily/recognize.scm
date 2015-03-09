@@ -19,7 +19,7 @@
       (`(,def . ,programs)
        (and (parse-definition names def)
             (parse-program programs)))
-      (else #f))))
+      (else (error "not a list of definitions: " program) #f))))
 
 (define (extract-names program)
   (map extract-name program))
@@ -36,7 +36,7 @@
      (and (symbol? name)
           (all symbol? vars)
           (parse-body names body)))
-    (else #f)))
+    (else (error "could not parse definition: " def) #f)))
 
 (define (parse-body names body)
   (match body
@@ -45,16 +45,17 @@
     (`(,car . ,cdr)
      (and (parse-statement names car)
           (parse-body names cdr)))
-    (else #f)))
+    (else (error "could not parse body of: " body) #f)))
 
 (define (parse-statement names st)
   (match st
     (`(begin . ,ss)
-     (all (lambda (exp) (parse-statement names exp))
-          ss))
+     (or (all (lambda (exp) (parse-statement names exp))
+              ss)
+         (error "begin didn't contain all statements: " st)))
     (`(newline)
      #t)
-    (`(print ,p)
+    (`(display ,p)
      (if (string? p)
          #t
          (parse-expression names p)))
@@ -65,7 +66,7 @@
     (`(set! ,v ,e)
      (and (symbol? v)
           (parse-expression names e)))
-    (else #f)))
+    (else (error "Could not parse statement: " st) #f)))
 
 (define (parse-expression names exp)
   (match exp
@@ -78,4 +79,5 @@
                      => (lambda (entry)
                           (= (length (cdr exp)) (cdr entry))))
                     (else #f))
-              (all (lambda (exp) (parse-expression names exp)) (cdr exp)))))))
+              (all (lambda (exp) (parse-expression names exp)) (cdr exp)))
+         (error "Not a valid expression: " exp)))))

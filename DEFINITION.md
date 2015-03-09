@@ -4,8 +4,8 @@
 <definition> ::= (define (<name> <var> ...) <statement> ... <expression>)
 
 <statement> ::= (begin <statement> ...)
-              | (print "string")
-              | (print <expression>)
+              | (display "string")
+              | (display <expression>)
               | (if <expression> <statement> <statement>)
               | (set! <var> <expression>)
 
