@@ -10,7 +10,7 @@
   (display (goo 0 1))
   (display (goo 1 0))
   (display (goo 1 1))
-  0)
+  (return 0))
 
 (define (goo x y)
   (if x
@@ -21,5 +21,5 @@
           (display 222333)
           (display 222666)))
   (newline)
-  0)
+  (return 0))
 

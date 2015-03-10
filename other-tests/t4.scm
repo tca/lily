@@ -1,1 +1,1 @@
-(define (main) (+ 100 4))
+(define (main) (return (+ 100 4)))

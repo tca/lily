@@ -41,8 +41,7 @@
 
 (define (parse-body names body)
   (match body
-    ('() #f)
-    (`(,exp) (parse-expression names exp))
+    ('() #t)
     (`(,car . ,cdr)
      (and (parse-statement names car)
           (parse-body names cdr)))
@@ -67,6 +66,8 @@
     (`(set! ,v ,e)
      (and (symbol? v)
           (parse-expression names e)))
+    (`(return ,e)
+     (parse-expression names e))
     (else (error "Could not parse statement: " st))))
 
 (define (parse-expression names exp)

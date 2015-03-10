@@ -1,2 +1,2 @@
-(define (main) (go))
-(define (go) 102)
+(define (main) (return (go)))
+(define (go) (return 102))

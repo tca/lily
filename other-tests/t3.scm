@@ -1,4 +1,4 @@
-(define (main) (go-a))
-(define (go-a) (go-b))
-(define (go-b) (go-c))
-(define (go-c) 103)
+(define (main) (return (go-a)))
+(define (go-a) (return (go-b)))
+(define (go-b) (return (go-c)))
+(define (go-c) (return 103))

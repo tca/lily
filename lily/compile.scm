@@ -16,13 +16,14 @@
             (elt (push rbp))
             (elt (mov rbp rsp))
             ,(compile-body vars body)
+            (elt (xor rax rax))
             (elt (pop rbp))
             (elt (ret))))
     (else (error "bad define" def))))
 
 (define (compile-body vars body)
   (match body
-    (`(,exp) (compile-expression vars exp))
+    (`() 'epsilon)
     (`(,car . ,cdr)
      `(join ,(compile-statement vars car)
             ,(compile-body vars cdr)))
@@ -53,6 +54,10 @@
     (`(set! ,v ,e)
      `(join ,(compile-expression vars e)
             (elt (mov (+ rbp ,(offset-of v vars)) rax))))
+    (`(return ,e)
+     `(join ,(compile-expression vars e)
+            (elt (pop rbp))
+            (elt (ret))))
     (else (error "unkown statement:" st))))
 
 (define (compile-expression vars exp)

@@ -1,11 +1,11 @@
 (define (main)
   (display (sum (x) (y)))
   (newline)
-  109)
+  (return 109))
 
-(define (x) 400)
-(define (y) 7)
-(define (sum a b) (+ a b))
+(define (x) (return 400))
+(define (y) (return 7))
+(define (sum a b) (return (+ a b)))
 
 #| ;;;;;;;;;
 

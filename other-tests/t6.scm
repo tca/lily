@@ -1,4 +1,4 @@
 (define (main)
-  (+ (go) (go)))
+  (return (+ (go) (go))))
 (define (go)
-  53)
+  (return 53))

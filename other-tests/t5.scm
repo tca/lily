@@ -3,4 +3,4 @@
   (display 2)
   (display 3)
   (newline)
-  105)
+  (return 105))

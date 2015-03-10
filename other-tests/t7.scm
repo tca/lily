@@ -5,8 +5,8 @@
   (newline)
   (display (third 1 2 3))
   (newline)
-  107)
+  (return 107))
 
-(define (first x y z) x)
-(define (second x y z) y)
-(define (third x y z) z)
+(define (first x y z) (return x))
+(define (second x y z) (return y))
+(define (third x y z) (return z))

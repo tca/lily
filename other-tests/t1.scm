@@ -1,1 +1,1 @@
-(define (main) 101)
+(define (main) (return 101))
