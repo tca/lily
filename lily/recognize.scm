@@ -19,12 +19,15 @@
                          (/ . 2)
                          (% . 2))
                        (extract-names program))))
-    (match program
-      ('() #t)
-      (`(,def . ,programs)
-       (and (parse-definition names def)
-            (parse-program programs)))
-      (else (error "not a list of definitions: " program) #f))))
+    (parse-program-loop names program)))
+
+(define (parse-program-loop names program)
+  (match program
+    ('() #t)
+    (`(,def . ,programs)
+     (and (parse-definition names def)
+          (parse-program-loop names programs)))
+    (else (error "not a list of definitions: " program) #f)))
 
 (define (extract-names program)
   (map extract-name program))
@@ -72,6 +75,8 @@
           (parse-expression names e)))
     (`(return ,e)
      (parse-expression names e))
+    (`(call ,e)
+     (parse-expression names e))
     (else (error "Could not parse statement: " st))))
 
 (define (parse-expression names exp)
@@ -84,6 +89,6 @@
               (cond ((assoc (car exp) names)
                      => (lambda (entry)
                           (= (length (cdr exp)) (cdr entry))))
-                    (else #f))
+                    (else (error "isnt a function " (car exp)) #f))
               (all (lambda (exp) (parse-expression names exp)) (cdr exp)))
          (error "Not a valid expression: " exp)))))

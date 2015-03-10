@@ -32,9 +32,9 @@
 (define (compile-statement vars st)
   (match st
     (`(begin . ,ss)
-     `(join . (map (lambda (exp)
-                     (compile-statement vars exp))
-                   ss)))
+     `(join . ,(map (lambda (exp)
+                      (compile-statement vars exp))
+                    ss)))
     (`(newline)
      `(elt (call newline)))
     (`(display ,(string? s))
@@ -68,6 +68,8 @@
      `(join ,(compile-expression vars e)
             (elt (pop rbp))
             (elt (ret))))
+    (`(call ,e)
+     (compile-expression vars e))
     (else (error "unkown statement:" st))))
 
 (define (compile-expression vars exp)
