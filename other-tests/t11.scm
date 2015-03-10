@@ -5,6 +5,6 @@
 
 (define (add a b)
   (if a
-      (display b)
-      (display (add (- a 1) (+ b 1))))
+      (display (add (- a 1) (+ b 1)))
+      (display b))
   0)

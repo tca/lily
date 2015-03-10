@@ -12,11 +12,18 @@
   (cond 
    ((string? x) (print-indent) (display x) (newline))
    ((equal? 'label (car x)) (print-label x))
+   ((equal? 'local-label (car x)) (print-local-label x))
    ((equal? 'include (car x)) (print-include x))
    (else  (print-instr x))))
 
 (define (print-label x)
   (newline)
+  (display (cadr x))
+  (display ":")
+  (newline))
+
+(define (print-local-label x)
+  ;; TODO error if x does not start with .
   (display (cadr x))
   (display ":")
   (newline))

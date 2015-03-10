@@ -20,13 +20,13 @@ equal:
         ret
         
 plus:
-        mov rax,[rsp+8*1]
-        add rax,[rsp+8*2]
+        mov rax,[rsp+8*2]
+        add rax,[rsp+8*1]
         ret
 
 minus:
-        mov rax,[rsp+8*1]
-        sub rax,[rsp+8*2]
+        mov rax,[rsp+8*2]
+        sub rax,[rsp+8*1]
         ret
         
 newline:
