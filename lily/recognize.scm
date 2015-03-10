@@ -9,6 +9,10 @@
 
 (define (parse-program program)
   (let ((names (append '((= . 2)
+                         (< . 2)
+                         (> . 2)
+                         (<= . 2)
+                         (>= . 2)
                          (+ . 2)
                          (- . 2)
                          (* . 2)

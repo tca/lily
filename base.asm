@@ -18,6 +18,34 @@ equal:
         setz al
         movzx eax, al
         ret
+
+less_than:
+        mov rax,[rsp+8*2]
+        cmp rax,[rsp+8*1]
+        setb al
+        movzx eax, al
+        ret
+        
+greater_than:
+        mov rax,[rsp+8*2]
+        cmp rax,[rsp+8*1]
+        seta al
+        movzx eax, al
+        ret
+        
+less_than_equal:
+        mov rax,[rsp+8*2]
+        cmp rax,[rsp+8*1]
+        setbe al
+        movzx eax, al
+        ret
+        
+greater_than_equal:
+        mov rax,[rsp+8*2]
+        cmp rax,[rsp+8*1]
+        setae al
+        movzx eax, al
+        ret
         
 plus:
         mov rax,[rsp+8*2]
