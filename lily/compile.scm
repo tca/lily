@@ -51,9 +51,8 @@
               ,(compile-statement vars as)
               (elt (local-label ,end-label)))))
     (`(set! ,v ,e)
-     ;; (and (symbol? v)
-     ;;      (compile-expression e))
-     (error "fail3"))
+     `(join ,(compile-expression vars e)
+            (elt (mov (+ rbp ,(offset-of v vars)) rax))))
     (else (error "unkown statement:" st))))
 
 (define (compile-expression vars exp)

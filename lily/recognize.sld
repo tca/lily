@@ -1,6 +1,7 @@
 (define-library (lily recognize)
   
   (import (scheme base)
+          (scheme write)
           (match match))
 
   (export

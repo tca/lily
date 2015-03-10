@@ -1,6 +1,7 @@
 SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.scm other-tests/t5.scm other-tests/t6.scm\
         other-tests/t7.scm other-tests/t8.scm other-tests/t9.scm\
-        other-tests/t10.scm other-tests/t11.scm other-tests/t12.scm
+        other-tests/t10.scm other-tests/t11.scm other-tests/t12.scm\
+        other-tests/t13.scm
 ASSEMBLES=$(SOURCES:.scm=.asm)
 OBJECTS=$(ASSEMBLES:.asm=.o)
 BINARIES=$(OBJECTS:.o=.exe)

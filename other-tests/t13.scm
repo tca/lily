@@ -1,0 +1,12 @@
+(define (main)
+  (display (go 1))
+  (newline)
+  113)
+
+(define (go n)
+  (set! n (+ n n))
+  (set! n (+ n n))
+  (set! n (+ n n))
+  (set! n (+ n n))
+  (set! n (+ n n))
+  n)
