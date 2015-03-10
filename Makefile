@@ -4,6 +4,7 @@ SOURCES=other-tests/t1.scm other-tests/t2.scm other-tests/t3.scm other-tests/t4.
         other-tests/t13.scm other-tests/t14.scm  \
         other-tests/t15.scm\
         other-tests/arithmetic.scm \
+		other-tests/t-fizzbuzz.scm \
         other-tests/t-gcd.scm other-tests/t-fact.scm
 ASSEMBLES=$(SOURCES:.scm=.asm)
 OBJECTS=$(ASSEMBLES:.asm=.o)

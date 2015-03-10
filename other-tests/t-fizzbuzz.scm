@@ -1,0 +1,16 @@
+(define (main)
+    (return (fizzbuzz 0)))
+
+(define (fizzbuzz x)
+    (if (= x 100)
+        (return 0)
+        (begin
+            (if (= (% x 3) 0)
+                (display "fizz")
+                (if (= (% x 5) 0)
+                    (display "buzz")
+                    (if (= (% x 15) 0)
+                        (display "fizzbuzz")
+                        (display ""))))
+            (newline)
+            (return (fizzbuzz (+ x 1))))))
