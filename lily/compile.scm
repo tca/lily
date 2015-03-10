@@ -85,6 +85,10 @@
 (define (mangle-name f)
   (case f
     ((=) 'equal)
+    ((<) 'less_than)
+    ((>) 'greater_than)
+    ((<=) 'less_than_equal)
+    ((>=) 'greater_than_equal)
     ((-) 'minus)
     ((+) 'plus)
     (else (mangle-symbol f))))
