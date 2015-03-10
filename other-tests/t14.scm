@@ -14,4 +14,4 @@
   (if (<= 1 0) (display 2) (display 1))
   (if (<= 1 1) (display 1) (display 2))
   (if (<= 0 1) (display 1) (display 2))
-  114)
+  (return 114))

@@ -17,6 +17,6 @@
 (define (gcd x y)
   (if (= 0 x)
       (return y)
-      (if (< x y)
+      (if (<= x y)
           (return (gcd x (- y x)))
           (return (gcd y x)))))
