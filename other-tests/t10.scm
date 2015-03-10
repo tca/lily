@@ -1,10 +1,11 @@
 (define (main)
-  (display (add 5 5))
+  (display (testif 0 2 3))
+  (display (testif 1 2 3))
   (newline)
   110)
 
-(define (add a b)
+(define (testif a b c)
   (if a
       (display b)
-      (display (add (- a 1) (+ b 1))))
+      (display c))
   0)
