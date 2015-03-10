@@ -56,6 +56,26 @@ minus:
         mov rax,[rsp+8*2]
         sub rax,[rsp+8*1]
         ret
+
+multiply:
+        mov rax,[rsp+8*2]
+        imul rax,[rsp+8*1]
+        ret
+
+divide:
+        mov rbx,[rsp+8*1]
+        mov rax,[rsp+8*2]
+        mov rdx,0
+        div rbx
+        ret
+
+modulo:
+        mov rbx,[rsp+8*1]
+        mov rax,[rsp+8*2]
+        mov rdx,0
+        div rbx
+        mov rax,rdx
+        ret
         
 newline:
         mov rsi, nl             ; load char ptr

@@ -96,4 +96,7 @@
     ((>=) 'greater_than_equal)
     ((-) 'minus)
     ((+) 'plus)
+    ((*) 'multiply)
+    ((/) 'divide)
+    ((%) 'modulo)
     (else (mangle-symbol f))))
