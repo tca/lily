@@ -2,7 +2,8 @@
 
   (import (scheme base)
           (scheme cxr)
-          (scheme write))
+          (scheme write)
+          (lily mangle))
 
   (export print-asm print-instr)
 

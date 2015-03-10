@@ -78,8 +78,10 @@ modulo:
         ret
         
 newline:
-        mov rsi, nl             ; load char ptr
         mov rax, 1              ; write
+        mov rsi, nl             ; load char ptr
+        mov rdx, 1 ; length
+        mov rdi, 1
         syscall
         ret
         

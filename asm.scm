@@ -11,10 +11,23 @@
 (define (print-asm x)
   (cond 
    ((string? x) (print-indent) (display x) (newline))
+   ((equal? 'section (car x)) (print-section x))
+   ((equal? 'db (car x)) (print-db x))
    ((equal? 'label (car x)) (print-label x))
    ((equal? 'local-label (car x)) (print-local-label x))
    ((equal? 'include (car x)) (print-include x))
    (else  (print-instr x))))
+
+(define (print-section x)
+  (display "section ")
+  (display (cadr x))
+  (newline))
+
+(define (print-db x)
+  (display (cadr x))
+  (display ": db ")
+  (display (quoted-string (caddr x)))
+  (newline))
 
 (define (print-label x)
   (newline)
