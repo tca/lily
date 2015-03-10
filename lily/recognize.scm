@@ -8,7 +8,8 @@
 
 
 (define (parse-program program)
-  (let ((names (append '((+ . 2)
+  (let ((names (append '((= . 2)
+                         (+ . 2)
                          (- . 2)
                          (* . 2)
                          (/ . 2)
@@ -62,7 +63,7 @@
     (`(if ,t ,cs ,as)
      (and (parse-expression names t)
           (parse-statement names cs)
-          (parse-statement names ss)))
+          (parse-statement names as)))
     (`(set! ,v ,e)
      (and (symbol? v)
           (parse-expression names e)))

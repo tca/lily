@@ -17,14 +17,16 @@
             (elt (mov rbp rsp))
             ,(compile-body vars body)
             (elt (pop rbp))
-            (elt (ret))))))
+            (elt (ret))))
+    (else (error "bad define" def))))
 
 (define (compile-body vars body)
   (match body
     (`(,exp) (compile-expression vars exp))
     (`(,car . ,cdr)
      `(join ,(compile-statement vars car)
-            ,(compile-body vars cdr)))))
+            ,(compile-body vars cdr)))
+    (else (error "bad body" body))))
 
 (define (compile-statement vars st)
   (match st
@@ -38,15 +40,18 @@
      `(join ,(compile-expression vars p)
             (elt (call display))))
     (`(if ,t ,cs ,as)
-     ;; (and (compile-expression t)
-     ;;      (compile-statement cs)
-     ;;      (compile-statement ss))
-     (error "fail2")
-     )
+     (let ((fail-label (mangle-symbol (gensym ".fail"))))
+       `(join ,(compile-expression vars t)
+              (elt (test rax rax))
+              (elt (jz ,fail-label))
+              ,(compile-statement vars cs)
+              (elt (label ,fail-label))
+              ,(compile-statement vars as))))
     (`(set! ,v ,e)
      ;; (and (symbol? v)
      ;;      (compile-expression e))
-     (error "fail3"))))
+     (error "fail3"))
+    (else (error "unkown statement:" st))))
 
 (define (compile-expression vars exp)
   (match exp
@@ -77,5 +82,7 @@
 
 (define (mangle-name f)
   (case f
+    ((=) 'equal)
+    ((-) 'minus)
     ((+) 'plus)
     (else (mangle-symbol f))))

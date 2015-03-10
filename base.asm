@@ -11,12 +11,24 @@ _start:
         mov     rdi,rax
         mov     rax,60
         syscall
+
+equal:
+        mov rax,[rsp+8*1]
+        cmp rax,[rsp+8*2]
+        setz al
+        movzx eax, al
+        ret
         
 plus:
         mov rax,[rsp+8*1]
         add rax,[rsp+8*2]
         ret
 
+minus:
+        mov rax,[rsp+8*1]
+        sub rax,[rsp+8*2]
+        ret
+        
 newline:
         mov rsi, nl             ; load char ptr
         mov rax, 1              ; write
